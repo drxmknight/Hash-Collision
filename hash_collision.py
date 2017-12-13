@@ -4,7 +4,7 @@ from string import ascii_letters
 import time
 
 # Hash size in bytes.
-hash_size = 3
+hash_size = 4
 
 # Number of experiments.
 experiments = 100
@@ -14,9 +14,7 @@ word_length = 3
 
 
 def main():
-    print("Generating dictionary ...")
-    # Al possible combinations of 3 letters.
-    words = [''.join(i) for i in product(ascii_letters, repeat=word_length)]
+    generate_dictionary()
     # Use set for faster search of hashes.
     hash_set = set()
     print("-- Hashing started --")
@@ -27,9 +25,11 @@ def main():
 
     total_duration = 0
 
-    for msg in words:
+    file = open('dictionary.txt', 'r')
+
+    for msg in file:
         # Message in bytes.
-        byte_str = msg.encode()
+        byte_str = msg.rstrip().encode()
         # Hash object constructor, with hash length=3 bytes (24 bits).
         digest = blake2b(byte_str, digest_size=hash_size)
         # Generate the message digest.
@@ -62,6 +62,25 @@ def main():
 
     else:
         print("No collisions found!")
+
+
+# Generate a dictionary file. If it already exist, then only reads from it.
+def generate_dictionary():
+    try:
+        # Check if the dictionary file exist.
+        file = open('dictionary.txt', 'r')
+        print("Opening dictionary ...")
+        file.close()
+        return
+    except IOError:
+        print("Generating dictionary ...")
+
+    file = open('dictionary.txt', 'w')
+
+    # All possible combinations of n=word_length letters.
+    for i in product(ascii_letters, repeat=word_length):
+        file.write(''.join(i) + '\n')
+    file.close()
 
 
 if __name__ == '__main__':
