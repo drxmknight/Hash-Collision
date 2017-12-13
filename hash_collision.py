@@ -4,7 +4,7 @@ from string import ascii_letters
 import time
 
 # Hash size in bytes.
-hash_size = 4
+hash_size = 3
 
 # Number of experiments.
 experiments = 100
@@ -28,8 +28,10 @@ def main():
     file = open('dictionary.txt', 'r')
 
     for msg in file:
+        # Delete \n at the end of string.
+        msg = msg.rstrip()
         # Message in bytes.
-        byte_str = msg.rstrip().encode()
+        byte_str = msg.encode()
         # Hash object constructor, with hash length=3 bytes (24 bits).
         digest = blake2b(byte_str, digest_size=hash_size)
         # Generate the message digest.
