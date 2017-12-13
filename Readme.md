@@ -29,7 +29,7 @@ combinations = 3
 
 * hash_size: number of the hash value, in bytes.
 * experiments: number of collisions needed to finish the program.
-* combinations: word length used to create the dictionary. We recommend values smaller than 5, because it will generate 52^5 = 380,204,032 elements and could throw memoryError, and there is no need of more for this purpose
+* combinations: word length used to create the dictionary. We recommend values smaller than 5, because it will generate 52^5 = 380,204,032 elements and could take some time.
 
 ### Run
 To execute the program:
@@ -39,17 +39,18 @@ To execute the program:
 
 ## Results
 
-This is an example output of the program with the default values.
+This is an example output of the program with the default values (dictionary already generated).
 
 ```
-Generating dictionary ...
+Opening dictionary ...
 -- Hashing started --
 Collisions found: 100
-Average time between every collision: 0.03781072616577148 seconds.
+Average collision found time : 0.011317360401153564 seconds.
+
 ```
 This was pretty expected, since the probability of collision is very high.
 
-If we change the `hash_size` value to 5,  the probability of collision is increased considerably, and we could expect that the dictionary size is not enough to find the amount of collisions required (experiments). We can uncomment the line to check that behaviour.
+If we change the `hash_size` value to 5,  the probability of collision is decreased considerably, and we could expect that the dictionary size is not enough to find the amount of collisions required (experiments) or even found one, so we need to increase the dictionary size to words of length=4. We can uncomment the following line to check that behaviour.
 
 ```python=
 print("Found a collision - word: {} -> hash: {} in {} seconds.".format(msg, hashed_msg, duration))
@@ -58,14 +59,13 @@ print("Found a collision - word: {} -> hash: {} in {} seconds.".format(msg, hash
 ```python=
 Generating dictionary ...
 -- Hashing started --
-Found a collision - word: pumt -> hash: fccfe2b7a0 in 14.750139474868774 seconds.
-Found a collision - word: tRms -> hash: d1e48fdfc6 in 6.060598611831665 seconds.
-Found a collision - word: Hccg -> hash: 0263c4c32f in 15.190600633621216 seconds.
-Found a collision - word: MJja -> hash: e0703bd745 in 6.33185601234436 seconds.
-Found a collision - word: UOUb -> hash: 191c10b156 in 8.128683090209961 seconds.
+Found a collision - word: pumt -> hash: fccfe2b7a0 in 5.3753745555877686 seconds.
+Found a collision - word: tRms -> hash: d1e48fdfc6 in 1.528867244720459 seconds.
+Found a collision - word: Hccg -> hash: 0263c4c32f in 4.566152811050415 seconds.
+Found a collision - word: MJja -> hash: e0703bd745 in 1.928964614868164 seconds.
+Found a collision - word: UOUb -> hash: 191c10b156 in 2.788785934448242 seconds.
 Collisions found: 5
-Average collision found time: 10.092375564575196 seconds.
+Average collision found time: 3.23762903213501 seconds.
 ```
 
-
-
+This mean that in a dictionary of size 52^4 = 7,311,616, and a hash size of 5 bytes, there were found only 5 collisions.
